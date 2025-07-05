@@ -119,7 +119,6 @@ function PondForm({ pond, onFormSubmit }: { pond?: Pond, onFormSubmit: (values: 
   );
 }
 
-
 function PondRowActions({ pond }: { pond: Pond }) {
   const { deletePond, updatePond } = useFarmData();
   const { toast } = useToast();
@@ -164,7 +163,7 @@ function PondRowActions({ pond }: { pond: Pond }) {
   )
 }
 
-export default function PondsPage() {
+function PondsPageContent() {
   const { ponds, addPond } = useFarmData();
   const { toast } = useToast();
   const [isAddOpen, setAddOpen] = React.useState(false);
@@ -176,73 +175,79 @@ export default function PondsPage() {
   }
 
   return (
-    <AppShell>
-      <main className="flex-1 p-4 sm:p-6 lg:p-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
-              Manajemen Kolam
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Lihat, tambah, dan kelola semua kolam Anda di satu tempat.
-            </p>
-          </div>
-          <Dialog open={isAddOpen} onOpenChange={setAddOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <PlusCircle className="mr-2" />
-                Tambah Kolam
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Tambah Kolam Baru</DialogTitle>
-                    <DialogDescription>Masukkan detail untuk kolam baru Anda.</DialogDescription>
-                </DialogHeader>
-                <PondForm onFormSubmit={handleAdd} />
-            </DialogContent>
-          </Dialog>
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+            Manajemen Kolam
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Lihat, tambah, dan kelola semua kolam Anda di satu tempat.
+          </p>
         </div>
+        <Dialog open={isAddOpen} onOpenChange={setAddOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <PlusCircle className="mr-2" />
+              Tambah Kolam
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+              <DialogHeader>
+                  <DialogTitle>Tambah Kolam Baru</DialogTitle>
+                  <DialogDescription>Masukkan detail untuk kolam baru Anda.</DialogDescription>
+              </DialogHeader>
+              <PondForm onFormSubmit={handleAdd} />
+          </DialogContent>
+        </Dialog>
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Daftar Kolam</CardTitle>
-            <CardDescription>Total {ponds.length} kolam terdaftar.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nama Kolam</TableHead>
-                  <TableHead className="text-center">Luas (m²)</TableHead>
-                  <TableHead className="text-center">Jumlah Ikan</TableHead>
-                  <TableHead className="text-center">Status</TableHead>
-                  <TableHead className="text-right">Aksi</TableHead>
+      <Card>
+        <CardHeader>
+          <CardTitle>Daftar Kolam</CardTitle>
+          <CardDescription>Total {ponds.length} kolam terdaftar.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nama Kolam</TableHead>
+                <TableHead className="text-center">Luas (m²)</TableHead>
+                <TableHead className="text-center">Jumlah Ikan</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-right">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {ponds.length > 0 ? ponds.map(pond => (
+                <TableRow key={pond.id}>
+                  <TableCell className="font-medium">{pond.name}</TableCell>
+                  <TableCell className="text-center">{pond.area}</TableCell>
+                  <TableCell className="text-center">{pond.fishCount.toLocaleString('id-ID')}</TableCell>
+                  <TableCell className="text-center">
+                    <Badge variant={pond.status === 'Aktif' ? 'default' : 'secondary'} className={pond.status === 'Aktif' ? 'bg-green-500/20 text-green-700 border-green-500/30' : 'bg-yellow-500/20 text-yellow-700 border-yellow-500/30'}>{pond.status}</Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <PondRowActions pond={pond} />
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {ponds.length > 0 ? ponds.map(pond => (
-                  <TableRow key={pond.id}>
-                    <TableCell className="font-medium">{pond.name}</TableCell>
-                    <TableCell className="text-center">{pond.area}</TableCell>
-                    <TableCell className="text-center">{pond.fishCount.toLocaleString('id-ID')}</TableCell>
-                    <TableCell className="text-center">
-                      <Badge variant={pond.status === 'Aktif' ? 'default' : 'secondary'} className={pond.status === 'Aktif' ? 'bg-green-500/20 text-green-700 border-green-500/30' : 'bg-yellow-500/20 text-yellow-700 border-yellow-500/30'}>{pond.status}</Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <PondRowActions pond={pond} />
-                    </TableCell>
-                  </TableRow>
-                )) : (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center h-24">Belum ada data kolam.</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </main>
-    </AppShell>
+              )) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center h-24">Belum ada data kolam.</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
+
+export default function PondsPage() {
+  return (
+      <AppShell>
+          <PondsPageContent />
+      </AppShell>
   );
 }

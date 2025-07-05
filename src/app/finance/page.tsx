@@ -111,7 +111,7 @@ function AddTransactionForm({ onFormSubmit }: { onFormSubmit: (values: z.infer<t
   );
 }
 
-export default function FinancePage() {
+function FinancePageContent() {
   const { transactions, addTransaction, deleteTransaction } = useFarmData();
   const { toast } = useToast();
   const [isAddOpen, setAddOpen] = React.useState(false);
@@ -131,106 +131,112 @@ export default function FinancePage() {
   };
 
   return (
-    <AppShell>
-      <main className="flex-1 p-4 sm:p-6 lg:p-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
-              Catatan Keuangan
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Lacak semua pemasukan dan pengeluaran budidaya lele Anda.
-            </p>
-          </div>
-          <Dialog open={isAddOpen} onOpenChange={setAddOpen}>
-            <DialogTrigger asChild>
-              <Button><PlusCircle className="mr-2" /> Tambah Transaksi</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Tambah Transaksi Baru</DialogTitle>
-                <DialogDescription>Catat pemasukan atau pengeluaran baru.</DialogDescription>
-              </DialogHeader>
-              <AddTransactionForm onFormSubmit={handleAddTransaction} />
-            </DialogContent>
-          </Dialog>
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+            Catatan Keuangan
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Lacak semua pemasukan dan pengeluaran budidaya lele Anda.
+          </p>
         </div>
+        <Dialog open={isAddOpen} onOpenChange={setAddOpen}>
+          <DialogTrigger asChild>
+            <Button><PlusCircle className="mr-2" /> Tambah Transaksi</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Tambah Transaksi Baru</DialogTitle>
+              <DialogDescription>Catat pemasukan atau pengeluaran baru.</DialogDescription>
+            </DialogHeader>
+            <AddTransactionForm onFormSubmit={handleAddTransaction} />
+          </DialogContent>
+        </Dialog>
+      </div>
 
-        <div className="grid gap-6 md:grid-cols-3 mb-6">
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Pemasukan</CardTitle>
-                    <ArrowDownCircle className="h-4 w-4 text-green-500" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold text-green-600">{formatCurrency(totalIncome)}</div>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Pengeluaran</CardTitle>
-                    <ArrowUpCircle className="h-4 w-4 text-red-500" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold text-red-600">{formatCurrency(totalExpense)}</div>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Keuntungan Bersih</CardTitle>
-                    <Wallet className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className={`text-2xl font-bold ${netProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>{formatCurrency(netProfit)}</div>
-                </CardContent>
-            </Card>
-        </div>
+      <div className="grid gap-6 md:grid-cols-3 mb-6">
+          <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Pemasukan</CardTitle>
+                  <ArrowDownCircle className="h-4 w-4 text-green-500" />
+              </CardHeader>
+              <CardContent>
+                  <div className="text-2xl font-bold text-green-600">{formatCurrency(totalIncome)}</div>
+              </CardContent>
+          </Card>
+          <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Pengeluaran</CardTitle>
+                  <ArrowUpCircle className="h-4 w-4 text-red-500" />
+              </CardHeader>
+              <CardContent>
+                  <div className="text-2xl font-bold text-red-600">{formatCurrency(totalExpense)}</div>
+              </CardContent>
+          </Card>
+          <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Keuntungan Bersih</CardTitle>
+                  <Wallet className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                  <div className={`text-2xl font-bold ${netProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>{formatCurrency(netProfit)}</div>
+              </CardContent>
+          </Card>
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Riwayat Transaksi</CardTitle>
-            <CardDescription>Daftar semua transaksi yang telah dicatat.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Tanggal</TableHead>
-                  <TableHead>Deskripsi</TableHead>
-                  <TableHead className="text-center">Jenis</TableHead>
-                  <TableHead className="text-right">Jumlah</TableHead>
-                  <TableHead className="text-right">Aksi</TableHead>
+      <Card>
+        <CardHeader>
+          <CardTitle>Riwayat Transaksi</CardTitle>
+          <CardDescription>Daftar semua transaksi yang telah dicatat.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Tanggal</TableHead>
+                <TableHead>Deskripsi</TableHead>
+                <TableHead className="text-center">Jenis</TableHead>
+                <TableHead className="text-right">Jumlah</TableHead>
+                <TableHead className="text-right">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sortedTransactions.length > 0 ? sortedTransactions.map(t => (
+                <TableRow key={t.id}>
+                  <TableCell>{format(t.date, "dd MMM yyyy", { locale: id })}</TableCell>
+                  <TableCell className="font-medium">{t.description}</TableCell>
+                  <TableCell className="text-center">
+                    <Badge variant={t.type === 'Pemasukan' ? 'default' : 'destructive'} className={t.type === 'Pemasukan' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                      {t.type}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className={`text-right font-semibold ${t.type === 'Pemasukan' ? 'text-green-600' : 'text-red-600'}`}>
+                    {formatCurrency(t.amount)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="ghost" size="icon" className="text-destructive" onClick={() => deleteTransaction(t.id)}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedTransactions.length > 0 ? sortedTransactions.map(t => (
-                  <TableRow key={t.id}>
-                    <TableCell>{format(t.date, "dd MMM yyyy", { locale: id })}</TableCell>
-                    <TableCell className="font-medium">{t.description}</TableCell>
-                    <TableCell className="text-center">
-                      <Badge variant={t.type === 'Pemasukan' ? 'default' : 'destructive'} className={t.type === 'Pemasukan' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
-                        {t.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className={`text-right font-semibold ${t.type === 'Pemasukan' ? 'text-green-600' : 'text-red-600'}`}>
-                      {formatCurrency(t.amount)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon" className="text-destructive" onClick={() => deleteTransaction(t.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )) : (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center h-24">Belum ada transaksi.</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </main>
-    </AppShell>
+              )) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center h-24">Belum ada transaksi.</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </main>
   );
+}
+
+export default function FinancePage() {
+    return (
+        <AppShell>
+            <FinancePageContent />
+        </AppShell>
+    );
 }

@@ -24,7 +24,7 @@ const eventSchema = z.object({
   description: z.string().optional(),
 });
 
-export default function CalendarPage() {
+function CalendarPageContent() {
   const { calendarEvents, addCalendarEvent, deleteCalendarEvent } = useFarmData();
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(new Date());
@@ -56,92 +56,98 @@ export default function CalendarPage() {
   };
   
   return (
-    <AppShell>
-      <main className="flex-1 p-4 sm:p-6 lg:p-8">
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-1">
-          Kalender Budidaya
-        </h1>
-        <p className="text-muted-foreground mb-6">
-          Kelola jadwal dan agenda penting dalam siklus budidaya Anda.
-        </p>
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-1">
+        Kalender Budidaya
+      </h1>
+      <p className="text-muted-foreground mb-6">
+        Kelola jadwal dan agenda penting dalam siklus budidaya Anda.
+      </p>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
-            <CardContent className="p-2 md:p-4 flex justify-center">
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                modifiers={{ events: eventDays }}
-                modifiersClassNames={{
-                  events: 'bg-primary/20 text-primary-foreground rounded-full',
-                }}
-                className="w-full"
-              />
-            </CardContent>
-          </Card>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardContent className="p-2 md:p-4 flex justify-center">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={setSelectedDate}
+              modifiers={{ events: eventDays }}
+              modifiersClassNames={{
+                events: 'bg-primary/20 text-primary-foreground rounded-full',
+              }}
+              className="w-full"
+            />
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Agenda untuk {selectedDate ? format(selectedDate, "dd MMMM yyyy", { locale: id }) : '...'}</CardTitle>
-              <CardDescription>Acara dan tugas yang dijadwalkan.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {selectedDayEvents.length > 0 ? (
-                selectedDayEvents.map(event => (
-                  <div key={event.id} className="flex items-start justify-between p-3 rounded-md bg-accent/50">
-                    <div>
-                      <p className="font-semibold">{event.title}</p>
-                      {event.description && <p className="text-sm text-muted-foreground">{event.description}</p>}
-                    </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteCalendarEvent(event.id)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+        <Card>
+          <CardHeader>
+            <CardTitle>Agenda untuk {selectedDate ? format(selectedDate, "dd MMMM yyyy", { locale: id }) : '...'}</CardTitle>
+            <CardDescription>Acara dan tugas yang dijadwalkan.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {selectedDayEvents.length > 0 ? (
+              selectedDayEvents.map(event => (
+                <div key={event.id} className="flex items-start justify-between p-3 rounded-md bg-accent/50">
+                  <div>
+                    <p className="font-semibold">{event.title}</p>
+                    {event.description && <p className="text-sm text-muted-foreground">{event.description}</p>}
                   </div>
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-8">Tidak ada acara untuk tanggal ini.</p>
-              )}
-              
-              <Dialog open={isAddOpen} onOpenChange={setAddOpen}>
-                <DialogTrigger asChild>
-                  <Button className="w-full" disabled={!selectedDate}>
-                    <PlusCircle className="mr-2" />
-                    Tambah Acara
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteCalendarEvent(event.id)}>
+                    <Trash2 className="h-4 w-4" />
                   </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Tambah Acara Baru</DialogTitle>
-                  </DialogHeader>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleAddEvent)} className="space-y-4">
-                      <FormField control={form.control} name="title" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Judul Acara</FormLabel>
-                          <FormControl><Input {...field} placeholder="Contoh: Panen Kolam B2" /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <FormField control={form.control} name="description" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Deskripsi (Opsional)</FormLabel>
-                          <FormControl><Textarea {...field} placeholder="Catatan tambahan..." /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <DialogFooter>
-                        <DialogClose asChild><Button type="button" variant="secondary">Batal</Button></DialogClose>
-                        <Button type="submit">Simpan</Button>
-                      </DialogFooter>
-                    </form>
-                  </Form>
-                </DialogContent>
-              </Dialog>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-8">Tidak ada acara untuk tanggal ini.</p>
+            )}
+            
+            <Dialog open={isAddOpen} onOpenChange={setAddOpen}>
+              <DialogTrigger asChild>
+                <Button className="w-full" disabled={!selectedDate}>
+                  <PlusCircle className="mr-2" />
+                  Tambah Acara
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Tambah Acara Baru</DialogTitle>
+                </DialogHeader>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(handleAddEvent)} className="space-y-4">
+                    <FormField control={form.control} name="title" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Judul Acara</FormLabel>
+                        <FormControl><Input {...field} placeholder="Contoh: Panen Kolam B2" /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                    <FormField control={form.control} name="description" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Deskripsi (Opsional)</FormLabel>
+                        <FormControl><Textarea {...field} placeholder="Catatan tambahan..." /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                    <DialogFooter>
+                      <DialogClose asChild><Button type="button" variant="secondary">Batal</Button></DialogClose>
+                      <Button type="submit">Simpan</Button>
+                    </DialogFooter>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
+          </CardContent>
+        </Card>
+      </div>
+    </main>
+  );
+}
+
+export default function CalendarPage() {
+  return (
+    <AppShell>
+      <CalendarPageContent />
     </AppShell>
   );
 }
