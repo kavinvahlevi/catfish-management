@@ -1389,11 +1389,60 @@ const initialData = {
         }
     ]
 };
+const LOCAL_STORAGE_KEY = 'catfishCareFarmData';
 // --- Context ---
 const FarmDataContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createContext"])(undefined);
 function FarmDataProvider({ children }) {
     _s();
-    const [farmData, setFarmData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(initialData);
+    const [farmData, setFarmData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        "FarmDataProvider.useState": ()=>{
+            // This function now runs only on the client side during initialization
+            if ("TURBOPACK compile-time falsy", 0) {
+                "TURBOPACK unreachable";
+            }
+            try {
+                const savedData = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+                if (savedData) {
+                    const parsedData = JSON.parse(savedData);
+                    // Revive date objects
+                    parsedData.growthRecords = parsedData.growthRecords.map({
+                        "FarmDataProvider.useState": (r)=>({
+                                ...r,
+                                date: new Date(r.date)
+                            })
+                    }["FarmDataProvider.useState"]);
+                    parsedData.transactions = parsedData.transactions.map({
+                        "FarmDataProvider.useState": (t)=>({
+                                ...t,
+                                date: new Date(t.date)
+                            })
+                    }["FarmDataProvider.useState"]);
+                    parsedData.calendarEvents = parsedData.calendarEvents.map({
+                        "FarmDataProvider.useState": (e)=>({
+                                ...e,
+                                date: new Date(e.date)
+                            })
+                    }["FarmDataProvider.useState"]);
+                    return parsedData;
+                }
+            } catch (error) {
+                console.error("Failed to load data from localStorage", error);
+            }
+            return initialData;
+        }
+    }["FarmDataProvider.useState"]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "FarmDataProvider.useEffect": ()=>{
+            // This effect runs whenever farmData changes, saving it to localStorage.
+            try {
+                window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(farmData));
+            } catch (error) {
+                console.error("Failed to save data to localStorage", error);
+            }
+        }
+    }["FarmDataProvider.useEffect"], [
+        farmData
+    ]);
     const contextValue = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "FarmDataProvider.useMemo[contextValue]": ()=>{
             const addPond = {
@@ -1560,11 +1609,11 @@ function FarmDataProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/src/contexts/FarmDataContext.tsx",
-        lineNumber: 169,
+        lineNumber: 200,
         columnNumber: 5
     }, this);
 }
-_s(FarmDataProvider, "LzPRrkoJhHlEzKaouFfE9YgY0og=");
+_s(FarmDataProvider, "ST9+s7QzItAnAlSMAOQfziuyHXI=");
 _c = FarmDataProvider;
 function useFarmData() {
     _s1();

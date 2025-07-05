@@ -2,7 +2,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState, useMemo } from 'react';
+import { createContext, useContext, useState, useMemo, useEffect } from 'react';
 
 // --- Data Structures ---
 export interface Pond {
@@ -95,12 +95,43 @@ const initialData: FarmData = {
   ],
 };
 
+const LOCAL_STORAGE_KEY = 'catfishCareFarmData';
+
 // --- Context ---
 const FarmDataContext = createContext<FarmDataContextValue | undefined>(undefined);
 
 // --- Provider ---
 export function FarmDataProvider({ children }: { children: ReactNode }) {
-  const [farmData, setFarmData] = useState<FarmData>(initialData);
+  
+  const [farmData, setFarmData] = useState<FarmData>(() => {
+    // This function now runs only on the client side during initialization
+    if (typeof window === 'undefined') {
+      return initialData;
+    }
+    try {
+      const savedData = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        // Revive date objects
+        parsedData.growthRecords = parsedData.growthRecords.map((r: any) => ({ ...r, date: new Date(r.date) }));
+        parsedData.transactions = parsedData.transactions.map((t: any) => ({ ...t, date: new Date(t.date) }));
+        parsedData.calendarEvents = parsedData.calendarEvents.map((e: any) => ({ ...e, date: new Date(e.date) }));
+        return parsedData;
+      }
+    } catch (error) {
+      console.error("Failed to load data from localStorage", error);
+    }
+    return initialData;
+  });
+
+  useEffect(() => {
+    // This effect runs whenever farmData changes, saving it to localStorage.
+    try {
+      window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(farmData));
+    } catch (error) {
+      console.error("Failed to save data to localStorage", error);
+    }
+  }, [farmData]);
 
   const contextValue = useMemo(() => {
     const addPond = (pond: Omit<Pond, 'id'>) => {
