@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // WARNING: These rules are insecure and are only intended for development.
+    // They allow public access to your entire database.
+    // Before deploying to production, you MUST set up proper security rules.
+    // For more information, see: https://firebase.google.com/docs/firestore/security/get-started
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
