@@ -2,19 +2,15 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-// --- PASTE YOUR FIREBASE CONFIGURATION HERE ---
-// 1. Go to your Firebase project's settings.
-// 2. In the "General" tab, find "Your apps".
-// 3. Select the web app and copy the firebaseConfig object.
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  authDomain: "your-project-id.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890abcdef"
+  apiKey: "AIzaSyDgsaXPXOT-zEaSxKRP_Ngi4MPYG714wCI",
+  authDomain: "catfishcare.firebaseapp.com",
+  projectId: "catfishcare",
+  storageBucket: "catfishcare.appspot.com",
+  messagingSenderId: "368686590653",
+  appId: "1:368686590653:web:a8415f29032f06dd6365d4"
 };
-// ---------------------------------------------
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
