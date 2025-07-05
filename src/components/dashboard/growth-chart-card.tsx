@@ -2,17 +2,9 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { useFarmData } from "@/contexts/FarmDataContext";
 import { cn } from "@/lib/utils";
-import { Line, LineChart, CartesianGrid, XAxis } from "recharts";
-
-const chartData = [
-    { month: "Januari", weight: 186 },
-    { month: "Februari", weight: 305 },
-    { month: "Maret", weight: 237 },
-    { month: "April", weight: 73 },
-    { month: "Mei", weight: 209 },
-    { month: "Juni", weight: 214 },
-];
+import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 const chartConfig = {
     weight: {
@@ -22,6 +14,8 @@ const chartConfig = {
 };
 
 export function GrowthChartCard({ className }: { className?: string }) {
+    const { growthData } = useFarmData();
+
     return (
         <Card className={cn(className)}>
             <CardHeader>
@@ -32,7 +26,7 @@ export function GrowthChartCard({ className }: { className?: string }) {
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
                     <LineChart
                         accessibilityLayer
-                        data={chartData}
+                        data={growthData}
                         margin={{
                             left: 12,
                             right: 12,
@@ -46,6 +40,7 @@ export function GrowthChartCard({ className }: { className?: string }) {
                             tickMargin={8}
                             tickFormatter={(value) => value.slice(0, 3)}
                         />
+                        <YAxis strokeWidth={0} width={0} />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dot" />}
