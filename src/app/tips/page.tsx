@@ -1,7 +1,6 @@
 
 import { AppShell } from "@/components/app-shell";
 import { CareTipsGenerator } from "@/components/dashboard/care-tips-generator";
-import { FarmDataProvider } from "@/contexts/FarmDataContext";
 
 export default function TipsPage() {
   return (
@@ -15,9 +14,7 @@ export default function TipsPage() {
             Dapatkan rekomendasi cerdas dari AI untuk mengoptimalkan peternakan Anda.
             </p>
         </div>
-        <FarmDataProvider>
-            <CareTipsGenerator />
-        </FarmDataProvider>
+        <CareTipsGenerator />
       </main>
     </AppShell>
   );
