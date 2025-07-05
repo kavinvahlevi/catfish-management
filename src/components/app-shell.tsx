@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   SidebarProvider,
   Sidebar,
@@ -25,16 +27,17 @@ import { FishIcon } from "@/components/icons";
 import { Button } from "./ui/button";
 
 const menuItems = [
-  { href: "#", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "#", icon: Droplets, label: "Manajemen Kolam" },
-  { href: "#", icon: ListTodo, label: "Jadwal Pakan" },
-  { href: "#", icon: LineChart, label: "Monitoring Pertumbuhan" },
-  { href: "#", icon: Wallet, label: "Catatan Keuangan" },
-  { href: "#", icon: Calendar, label: "Kalender Budidaya" },
-  { href: "#", icon: Sparkles, label: "Tips Budidaya" },
+  { href: "/", icon: LayoutDashboard, label: "Dashboard" },
+  { href: "/ponds", icon: Droplets, label: "Manajemen Kolam" },
+  { href: "/feeding-schedule", icon: ListTodo, label: "Jadwal Pakan" },
+  { href: "/growth-monitoring", icon: LineChart, label: "Monitoring Pertumbuhan" },
+  { href: "/finance", icon: Wallet, label: "Catatan Keuangan" },
+  { href: "/calendar", icon: Calendar, label: "Kalender Budidaya" },
+  { href: "/tips", icon: Sparkles, label: "Tips Budidaya" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   // NOTE: This is a workaround for a hydration mismatch error.
   const [isClient, setIsClient] = React.useState(false);
   React.useEffect(() => {
@@ -63,13 +66,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton
                     asChild
-                    isActive={item.label === "Dashboard"}
+                    isActive={item.href === '/' ? pathname === item.href : pathname.startsWith(item.href)}
                     tooltip={{ children: item.label }}
                   >
-                    <a href={item.href}>
+                    <Link href={item.href}>
                       <item.icon />
                       <span>{item.label}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
