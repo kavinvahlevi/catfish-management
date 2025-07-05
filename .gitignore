@@ -14,15 +14,13 @@
 /coverage
 
 # next.js
-/.next/
-/out/
+
 
 # production
 /build
 
 # misc
-.DS_Store
-*.pem
+
 
 # debug
 npm-debug.log*
@@ -38,6 +36,3 @@ next-env.d.ts
 
 .genkit/*
 
-# firebase
-firebase-debug.log
-firestore-debug.log

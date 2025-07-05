@@ -1,0 +1,10 @@
+{
+  "/calendar/page": "app/calendar/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/feeding-schedule/page": "app/feeding-schedule/page.js",
+  "/finance/page": "app/finance/page.js",
+  "/growth-monitoring/page": "app/growth-monitoring/page.js",
+  "/page": "app/page.js",
+  "/ponds/page": "app/ponds/page.js",
+  "/tips/page": "app/tips/page.js"
+}
