@@ -1,10 +1,11 @@
+
 import { AppShell } from "@/components/app-shell";
-import { CareTipsGenerator } from "@/components/dashboard/care-tips-generator";
 import { CultivationCalendarCard } from "@/components/dashboard/cultivation-calendar-card";
 import { GrowthChartCard } from "@/components/dashboard/growth-chart-card";
 import { FinanceSummaryCard, FeedSummaryCard, PondSummaryCard } from "@/components/dashboard/summary-cards";
 import { FarmDataProvider } from "@/contexts/FarmDataContext";
 import { CatfishDiagnosisCard } from "@/components/dashboard/catfish-diagnosis-card";
+import { TipsTeaserCard } from "@/components/dashboard/tips-teaser-card";
 
 export default function Home() {
   return (
@@ -26,12 +27,12 @@ export default function Home() {
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">
             <GrowthChartCard className="xl:col-span-2" />
-            <CultivationCalendarCard />
+            <CatfishDiagnosisCard />
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            <CareTipsGenerator />
-            <CatfishDiagnosisCard />
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
+            <CultivationCalendarCard className="md:col-span-2" />
+            <TipsTeaserCard />
           </div>
         </main>
       </FarmDataProvider>

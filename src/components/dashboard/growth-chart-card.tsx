@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +15,12 @@ const chartConfig = {
 };
 
 export function GrowthChartCard({ className }: { className?: string }) {
-    const { growthData } = useFarmData();
+    const { growthRecords } = useFarmData();
+
+    const chartData = growthRecords.map(record => ({
+        month: record.date.toLocaleString('id-ID', { month: 'long' }),
+        weight: record.averageWeight,
+    })).slice(-6); // show last 6 records
 
     return (
         <Card className={cn(className)}>
@@ -26,7 +32,7 @@ export function GrowthChartCard({ className }: { className?: string }) {
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
                     <LineChart
                         accessibilityLayer
-                        data={growthData}
+                        data={chartData}
                         margin={{
                             left: 12,
                             right: 12,
@@ -40,7 +46,7 @@ export function GrowthChartCard({ className }: { className?: string }) {
                             tickMargin={8}
                             tickFormatter={(value) => value.slice(0, 3)}
                         />
-                        <YAxis strokeWidth={0} width={0} />
+                        <YAxis strokeWidth={0} width={0} domain={['dataMin - 50', 'dataMax + 50']} />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dot" />}
