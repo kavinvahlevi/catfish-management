@@ -58,7 +58,7 @@ export interface FarmDataContextValue extends FarmData {
   addGrowthRecord: (record: Omit<GrowthRecord, 'id'>) => void;
   deleteGrowthRecord: (recordId: string) => void;
   addCalendarEvent: (event: Omit<CalendarEvent, 'id'>) => void;
-  deleteCalendarEvent: (eventId: string, date: Date) => void;
+  deleteCalendarEvent: (eventId: string) => void;
   updateFeedingSchedule: (schedules: FeedingSchedule[]) => void;
 }
 

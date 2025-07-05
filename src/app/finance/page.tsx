@@ -120,6 +120,10 @@ export default function FinancePage() {
   const totalExpense = transactions.filter(t => t.type === 'Pengeluaran').reduce((sum, t) => sum + t.amount, 0);
   const netProfit = totalIncome - totalExpense;
 
+  const sortedTransactions = React.useMemo(() => {
+    return [...transactions].sort((a, b) => b.date.getTime() - a.date.getTime());
+  }, [transactions]);
+
   const handleAddTransaction = (values: z.infer<typeof transactionSchema>) => {
     addTransaction(values);
     toast({ title: "Sukses", description: "Transaksi baru berhasil ditambahkan." });
@@ -199,7 +203,7 @@ export default function FinancePage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {transactions.length > 0 ? transactions.map(t => (
+                {sortedTransactions.length > 0 ? sortedTransactions.map(t => (
                   <TableRow key={t.id}>
                     <TableCell>{format(t.date, "dd MMM yyyy", { locale: id })}</TableCell>
                     <TableCell className="font-medium">{t.description}</TableCell>

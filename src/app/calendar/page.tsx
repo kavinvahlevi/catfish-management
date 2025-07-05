@@ -94,7 +94,7 @@ export default function CalendarPage() {
                       <p className="font-semibold">{event.title}</p>
                       {event.description && <p className="text-sm text-muted-foreground">{event.description}</p>}
                     </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteCalendarEvent(event.id, event.date)}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteCalendarEvent(event.id)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
